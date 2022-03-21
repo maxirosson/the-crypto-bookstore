@@ -1,3 +1,5 @@
+from typing import List
+
 from decouple import config
 from tweepy.models import Status
 import tweepy
@@ -28,7 +30,7 @@ class TwitterHelper:
             traceback.print_exc()
             raise
 
-    def user_timeline(self) -> list[Status]:
+    def user_timeline(self) -> List[Status]:
         tweets_list = []
 
         tweets = tweepy.Cursor(
