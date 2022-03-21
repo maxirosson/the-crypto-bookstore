@@ -5,7 +5,7 @@ MAX_RETRY = 2
 retry_count = 0
 
 
-def build_text(book):
+def build_text(product):
     ellipsis_character = "..."
     tags = " #btc #eth"
 
@@ -14,39 +14,39 @@ def build_text(book):
     url_length = 24
     length_available = length_limit - len(tags) - url_length
 
-    text = book.title + "\n" + book.description
+    text = product.title + "\n" + product.description
     if len(text) > length_available:
         text = text[0:length_available - len(ellipsis_character)] + ellipsis_character + tags
     else:
         text = text + tags
-    return text + "\n" + book.url
+    return text + "\n" + product.url
 
 
-def post_randomly_book(twitter_helper):
-    selected_book = bookstore.select_book()
-    print("Selected book title: " + selected_book.title)
-    print("Selected book description: " + selected_book.description)
-    print("Selected book url: " + selected_book.url)
+def post_randomly_product(twitter_helper):
+    selected_product = bookstore.select_product()
+    print("Selected product title: " + selected_product.title)
+    print("Selected product description: " + selected_product.description)
+    print("Selected product url: " + selected_product.url)
 
     status_list = twitter_helper.user_timeline()
 
-    is_posted_book = any(status.full_text.lower().startswith(selected_book.title.lower()) for status in status_list)
-    if is_posted_book:
-        print("This book was already posted")
+    is_posted_product = any(status.full_text.lower().startswith(selected_product.title.lower()) for status in status_list)
+    if is_posted_product:
+        print("This product was already posted")
         global retry_count
         if retry_count < MAX_RETRY:
             retry_count = retry_count + 1
-            print("Retrying to post another book")
-            post_randomly_book(twitter_helper)
+            print("Retrying to post another product")
+            post_randomly_product(twitter_helper)
         else:
-            print("There are no more attempts available. No book was posted")
+            print("There are no more attempts available. No product was posted")
     else:
-        print("Trying to post a book...")
-        text = build_text(selected_book)
+        print("Trying to post a product...")
+        text = build_text(selected_product)
         twitter_helper.update_status(text)
 
 
 # Main
 twitter_helper = TwitterHelper()
 twitter_helper.connect()
-post_randomly_book(twitter_helper)
+post_randomly_product(twitter_helper)
