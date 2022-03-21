@@ -1,7 +1,7 @@
 import bookstore
 from twitter import TwitterHelper
 
-MAX_RETRY = 2
+MAX_RETRY = 5
 retry_count = 0
 
 
