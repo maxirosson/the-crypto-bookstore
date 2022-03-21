@@ -26,6 +26,7 @@ class TwitterHelper:
             print('Successful Authentication')
         except Exception:
             traceback.print_exc()
+            raise
 
     def user_timeline(self) -> list[Status]:
         tweets_list = []
@@ -54,3 +55,4 @@ class TwitterHelper:
             print('Tweet posted')
         except Exception:
             traceback.print_exc()
+            raise
