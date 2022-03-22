@@ -30,7 +30,7 @@ class TwitterHelper:
             traceback.print_exc()
             raise
 
-    def user_timeline(self) -> List[Status]:
+    def user_timeline(self, days_ago) -> List[Status]:
         tweets_list = []
 
         tweets = tweepy.Cursor(
@@ -43,7 +43,6 @@ class TwitterHelper:
         ).items(100)
 
         today = datetime.datetime.now()
-        days_ago = 1
         since_date = (today - datetime.timedelta(days_ago)).date()
         for tweet in tweets:
             if tweet.created_at.date() >= since_date:

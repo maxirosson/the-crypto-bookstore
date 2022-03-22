@@ -1,5 +1,4 @@
 import requests
-import random
 from bs4 import BeautifulSoup
 
 
@@ -10,17 +9,22 @@ class Product:
         self.description = description
 
 
-def select_product():
+def product_urls() -> list[str]:
+    result = []
     html_text = requests.get('https://thecryptobookstore.com/product-sitemap.xml').text
     sitemapSoup = BeautifulSoup(html_text, 'lxml')
     products = sitemapSoup.find_all('loc')
-    number_of_products = len(products)
-    selected_idx = random.randint(0, number_of_products - 1)
-    selected_url = products[selected_idx].text
+    # ignores the first item because it is not a product
+    products = products[1:len(products) - 1]
+    for product in products:
+        result.append(product.get_text())
+    return result
 
-    html_text = requests.get(selected_url).text
+
+def get_product(url) -> Product:
+    html_text = requests.get(url).text
     product_soup = BeautifulSoup(html_text, 'html.parser')
     title = product_soup.head.title.text.replace(' - The Crypto Bookstore', '')
     description = product_soup.find('meta', {'name': 'description'})['content']
+    return Product(url=url, title=title, description=description)
 
-    return Product(url=selected_url, title=title, description=description)
