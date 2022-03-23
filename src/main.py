@@ -1,7 +1,7 @@
 from typing import List
 import random
 import bookstore
-from twitter import TwitterHelper
+import twitter
 
 
 def build_text(product):
@@ -21,13 +21,13 @@ def build_text(product):
     return text + "\n" + product.url
 
 
-def exclude_posted_urls(product_urls, status_list) -> List[str]:
+def exclude_posted_urls(product_urls, tweets) -> List[str]:
     result = []
     for product in product_urls:
         excluded = False
         product_title = product.split('/')[-2].replace('-', ' ')
-        for status in status_list:
-            tweet_title = status.full_text.split('\n')[0].lower()
+        for tweet in tweets:
+            tweet_title = tweet.text.split('\n')[0].lower()
             if product_title == tweet_title:
                 excluded = True
         if not excluded:
@@ -35,11 +35,11 @@ def exclude_posted_urls(product_urls, status_list) -> List[str]:
     return result
 
 
-def post_randomly_product(twitter_helper):
+def post_randomly_product():
     days_ago = 30
-    status_list = twitter_helper.user_timeline(days_ago)
+    tweets = twitter.user_timeline(days_ago)
     product_urls = bookstore.product_urls()
-    product_urls = exclude_posted_urls(product_urls, status_list)
+    product_urls = exclude_posted_urls(product_urls, tweets)
 
     if len(product_urls) != 0:
         print("Trying to post a product...")
@@ -54,12 +54,10 @@ def post_randomly_product(twitter_helper):
         print("Selected product url: " + selected_product.url)
 
         text = build_text(selected_product)
-        twitter_helper.update_status(text)
+        twitter.update_status(text)
     else:
         print("All product have been posted during the last " + str(days_ago) + " days")
 
 
 # Main
-twitter_helper = TwitterHelper()
-twitter_helper.connect()
-post_randomly_product(twitter_helper)
+post_randomly_product()
