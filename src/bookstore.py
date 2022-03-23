@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+from typing import List
 
 
 class Product:
@@ -9,7 +10,7 @@ class Product:
         self.description = description
 
 
-def product_urls() -> list[str]:
+def product_urls() -> List[str]:
     result = []
     html_text = requests.get('https://thecryptobookstore.com/product-sitemap.xml').text
     sitemapSoup = BeautifulSoup(html_text, 'lxml')
