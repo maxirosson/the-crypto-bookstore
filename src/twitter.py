@@ -1,59 +1,46 @@
 from typing import List
 
 from decouple import config
-from tweepy.models import Status
+from tweepy import Tweet
 import tweepy
 import traceback
 import datetime
 
 
-class TwitterHelper:
+def user_timeline(days_ago) -> List[Tweet]:
+    result = []
 
-    def __init__(self):
-        self.api = None
+    rcf_3339_format = '%Y-%m-%dT%H:%M:%SZ'
+    today = datetime.datetime.now()
+    start_time = (today - datetime.timedelta(days_ago)).strftime(rcf_3339_format)
 
-    def connect(self):
+    client = tweepy.Client(bearer_token=config('TWITTER_BEARER_TOKEN'))
+    user_id = client.get_user(username=config('TWITTER_USER_NAME')).data.id
+    tweets = tweepy.Paginator(client.get_users_tweets,
+                              id=user_id,
+                              start_time=start_time,
+                              exclude=['replies', 'retweets']).flatten()
+
+    for tweet in tweets:
+        result.append(tweet)
+
+    return result
+
+
+def update_status(text):
+    try:
         api_key = config("TWITTER_API_KEY")
         api_secrets = config("TWITTER_API_KEY_SECRET")
         access_token = config("TWITTER_ACCESS_TOKEN")
         access_secret = config("TWITTER_ACCESS_TOKEN_SECRET")
 
-        auth = tweepy.OAuthHandler(api_key, api_secrets)
-        auth.set_access_token(access_token, access_secret)
+        client = tweepy.Client(consumer_key=api_key,
+                               consumer_secret=api_secrets,
+                               access_token=access_token,
+                               access_token_secret=access_secret)
 
-        self.api = tweepy.API(auth)
-
-        try:
-            self.api.verify_credentials()
-            print('Successful Authentication')
-        except Exception:
-            traceback.print_exc()
-            raise
-
-    def user_timeline(self, days_ago) -> List[Status]:
-        tweets_list = []
-
-        tweets = tweepy.Cursor(
-            self.api.user_timeline,
-            user_id=config('TWITTER_USER_NAME'),
-            include_rts=False,
-            exclude_replies=True,
-            # Necessary to keep full_text. Otherwise, only the first 140 words are extracted
-            tweet_mode='extended'
-        ).items(100)
-
-        today = datetime.datetime.now()
-        since_date = (today - datetime.timedelta(days_ago)).date()
-        for tweet in tweets:
-            if tweet.created_at.date() >= since_date:
-                tweets_list.append(tweet)
-
-        return tweets_list
-
-    def update_status(self, status):
-        try:
-            self.api.update_status(status=status)
-            print('Tweet posted')
-        except Exception:
-            traceback.print_exc()
-            raise
+        client.create_tweet(text=text)
+        print('Tweet posted')
+    except Exception:
+        traceback.print_exc()
+        raise

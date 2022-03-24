@@ -22,6 +22,7 @@ To use the Twitter API you have to create the following credentials:
 <br>`TWITTER_ACCESS_TOKEN_SECRET`
 <br>`TWITTER_API_KEY`
 <br>`TWITTER_API_KEY_SECRET`
+<br>`TWITTER_BEARER_TOKEN`
 
 You also have to enable OAuth 1.0a to add write permission that is required to post tweets.
 
