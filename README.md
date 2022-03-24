@@ -1,4 +1,6 @@
-# the-crypto-bookstore
+# The Crypto Bookstore
+
+[![Tweet](https://github.com/maxirosson/the-crypto-bookstore/actions/workflows/tweet.yml/badge.svg?branch=master)](https://github.com/maxirosson/the-crypto-bookstore/actions/workflows/tweet.yml)
 
 # Virtual Environments
 
