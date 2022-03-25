@@ -13,7 +13,12 @@ def build_text(product):
     url_length = 24
     length_available = length_limit - len(tags) - url_length
 
-    text = product.title + "\n" + product.description
+    if product.author is not None and product.year is not None:
+        text = product.title + "\n" +  \
+               "Published in " + product.year + " by " + product.author + "\n" + \
+               product.description
+    else:
+        text = product.title + "\n" + product.description
     if len(text) > length_available:
         text = text[0:length_available - len(ellipsis_character)] + ellipsis_character + tags
     else:
@@ -50,6 +55,10 @@ def post_randomly_product():
 
         selected_product = bookstore.get_product(selected_url)
         print("Selected product title: " + selected_product.title)
+        if selected_product.author is not None:
+            print("Selected product author: " + selected_product.author)
+        if selected_product.year is not None:
+            print("Selected product year: " + selected_product.year)
         print("Selected product description: " + selected_product.description)
         print("Selected product url: " + selected_product.url)
 
