@@ -41,9 +41,11 @@ def update_status(text):
         
         if config("DRY_RUN_ENABLED") == 'false':
             client.create_tweet(text=text)
-            print("Tweet posted:" + text)
+            print("Tweet posted:")
+            print(text)
         else:
-            print("Tweet ignored:" + text)
+            print("Tweet ignored:")
+            print(text)
             
     except Exception:
         traceback.print_exc()
