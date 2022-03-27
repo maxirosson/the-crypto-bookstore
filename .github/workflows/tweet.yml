@@ -9,6 +9,7 @@ on:
       dryRunEnabled:
         description: 'Whether the dry run module is enabled or not'
         required: true
+        type: boolean
         default: 'false'
 jobs:
   tweet:
