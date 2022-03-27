@@ -7,11 +7,15 @@ import twitter
 def build_text(product):
     ellipsis_character = "..."
     tags = " #btc #eth"
+    coinkit_legend = "\n@coinkit_ mon 10 10 #BTC"
 
     length_limit = 280
     # Every url posted is transformed into a shorter url that contains 24 characters
     url_length = 24
-    length_available = length_limit - len(tags) - url_length
+    
+    coinkit_length =  len(coinkit_legend)
+    
+    length_available = length_limit - len(tags) - url_length - coinkit_length
 
     if product.author is not None and product.year is not None:
         text = product.title + "\n" +  \
@@ -23,7 +27,7 @@ def build_text(product):
         text = text[0:length_available - len(ellipsis_character)] + ellipsis_character + tags
     else:
         text = text + tags
-    return text + "\n" + product.url
+    return text + coinkit_legend + "\n" + product.url
 
 
 def exclude_posted_urls(product_urls, tweets) -> List[str]:
