@@ -38,9 +38,13 @@ def update_status(text):
                                consumer_secret=api_secrets,
                                access_token=access_token,
                                access_token_secret=access_secret)
-
-        client.create_tweet(text=text)
-        print('Tweet posted')
+        
+        if config("DRY_RUN_ENABLED") == 'false':
+            client.create_tweet(text=text)
+            print("Tweet posted:" + text)
+        else:
+            print("Tweet ignored:" + text)
+            
     except Exception:
         traceback.print_exc()
         raise
