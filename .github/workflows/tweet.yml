@@ -5,7 +5,11 @@ on:
     - cron: "0 9 * * *"
     - cron: "0 17 * * *"
   workflow_dispatch:
-
+    inputs:
+      dryRunEnabled:
+        description: 'Whether the dry run module is enabled or not'
+        required: true
+        default: 'false'
 jobs:
   tweet:
     runs-on: ubuntu-latest
@@ -16,6 +20,7 @@ jobs:
       TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
       TWITTER_API_KEY_SECRET: ${{ secrets.TWITTER_API_KEY_SECRET }}
       TWITTER_BEARER_TOKEN: ${{ secrets.TWITTER_BEARER_TOKEN }}
+      DRY_RUN_ENABLED: ${{ github.event.inputs.dryRunEnabled }}
     steps:
       # https://github.com/marketplace/actions/checkout
       - uses: actions/checkout@v2
