@@ -39,7 +39,7 @@ def update_status(text):
                                access_token=access_token,
                                access_token_secret=access_secret)
         
-        if config("DRY_RUN_ENABLED") == false:
+        if config("DRY_RUN_ENABLED") == False:
             client.create_tweet(text=text)
             print("Tweet posted:")
             print(text)
