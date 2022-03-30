@@ -6,8 +6,9 @@ import twitter
 
 def build_text(product):
     ellipsis_character = "..."
-    tags = " #btc #eth"
-    coinkit_legend = "\n@coinkit_ mon 10 10 #BTC"
+    #tags = " #btc #eth"
+    tags = ""
+    coinkit_legend = "\n\n@coinkit_ mon 10 10 #BTC"
 
     length_limit = 280
     # Every url posted is transformed into a shorter url that contains 24 characters
