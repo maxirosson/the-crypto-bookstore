@@ -1,4 +1,4 @@
-# The Crypto Bookstore
+# [The Crypto Bookstore](https://thecryptobookstore.com/)
 
 [![Tweet](https://github.com/maxirosson/the-crypto-bookstore/actions/workflows/tweet.yml/badge.svg?branch=master)](https://github.com/maxirosson/the-crypto-bookstore/actions/workflows/tweet.yml)
 
